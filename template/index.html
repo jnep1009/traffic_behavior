@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %}Traffic Analytics{% endblock title %}
+
+{% block custom_css %}
+    <link href='//api.tiles.mapbox.com/mapbox.js/v2.2.1/mapbox.css' rel='stylesheet'>
+    <link href='//api.tiles.mapbox.com/mapbox.js/v2.2.1/mapbox.css' rel='stylesheet'>
+{% endblock custom_css %}
+
+{% block main_content %}
+    <div class="col-md-12"><p>hi</p></div>
+
+{% endblock main_content %}
+{% block js %}
+    <script
+            data-main="{% static 'js/main' %}"
+            src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.16/require.min.js">
+    </script>
+{% endblock js %}
