@@ -1,0 +1,10 @@
+#map_canvas{
+    height:400px
+}
+html, body {
+    height: 100%;
+}
+
+.container {
+    min-height: 100%;
+}

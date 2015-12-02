@@ -27,16 +27,16 @@ def get_stn(request):
 
     """ Get geojson for Georgia."""
     countylist = []
-    geoJson = {"type": "FeatureCollection", "features": []}
+    geo_map = {"type": "FeatureCollection", "features": []}
     stn_county = stnMeta.objects.distinct('county')
     for county in stn_county:
         countylist.append(county.county.lower())
     print countylist
-    params = {"state": "al", "meta": "geojson,id,name"}
+    params = {"state": "ga", "meta": "geojson,id,name"}
     response = requests.get('http://data.srcc.rcc-acis.org/General/county', params=params).json()
     for count in response['meta']:
-        if count['name'].lower() in countylist:
-            geoJson['features'].append({
+        if count['name'].lower().split(" ")[0] in countylist:
+            geo_map['features'].append({
                 'type': 'Feature',
                 'geometry': count['geojson'],
                 'properties': {
@@ -44,8 +44,8 @@ def get_stn(request):
                     'county': count['name']
                 }
             })
-
-    return HttpResponse(json.dumps(stn_set))
+    output = {'cam': stn_set, 'geo': geo_map}
+    return HttpResponse(json.dumps(output))
 
 
 
