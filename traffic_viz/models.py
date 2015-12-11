@@ -15,8 +15,8 @@ class stnMeta(models.Model):
 
 
 class stnRecord(models.Model):
-    stn_id = models.CharField(max_length=15, blank=True, primary_key=True)
-    datestamp = models.DateTimeField(blank=True, primary_key=True)
+    stn_id = models.CharField(max_length=15,  primary_key=True)
+    datestamp = models.DateTimeField(primary_key=True)
     record = models.IntegerField(blank=True, null=True)
 
     class Meta:
