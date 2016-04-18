@@ -5,7 +5,7 @@ import requests
 import pandas as pd
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.db import connection
-from traffic_viz.models import stnMeta, stnRecord
+from traffic_viz.models import stnMeta, stnRecord, weatherStation
 
 
 # Create your views here.
@@ -61,6 +61,39 @@ def get_stn(request):
     output = {'cam': stn_set, 'geo': geo_map}
     return HttpResponse(json.dumps(output))
 
+def get_RainStn(request):
+    """ Get Lat,Lng of each wstn"""
+    if request.method != 'GET':
+        return HttpResponseBadRequest()
+
+    """ Get Station From Database. """
+    stn_queryset = weatherStation.objects.distinct('stn_id')
+    stn_set = {
+        'type': 'FeatureCollection',
+        'features': []
+    }
+    for each_stn in stn_queryset:
+        print(each_stn)
+        stn_set['features'].append({
+            'type': 'Feature',
+            'properties': {
+                'title': 'Stn Id: ' + each_stn.stn_id + '<br>',
+                'icon': {
+                    'className': 'fa-icon',
+                    'html': '<i style ="color:blue" class="fa fa-circle fa-1x"></i>',
+                    'iconSize': [0.5, 0.5]
+                }
+            },
+            'geometry': {
+                'type': 'Point',
+                'coordinates': [each_stn.lng, each_stn.lat]
+            }
+
+        })
+
+    output = {'wstn': stn_set}
+    return HttpResponse(json.dumps(output))
+
 def get_record(request):
     """ Get record for a given station"""
     if request.method != 'GET':
@@ -74,16 +107,16 @@ def get_record(request):
     record_all = []
     cursor = connection.cursor()
     cursor.execute("select stn_id as id, date_trunc('day',datestamp), " \
-            "cast (avg(record) as integer) as avg, (select max(record) from stn_record) as max_rec from stn_record " \
+            "cast (sum(record) as integer) as daily, (select sum(avg_record) from stn_record) as avg_daily from stn_record " \
             "where stn_id=%s group by stn_id, date_trunc('day', datestamp) " \
-            "order by date_trunc('day', datestamp);", ['17696'])
+            "order by date_trunc('day', datestamp);", ['15451'])
     total_rows = cursor.fetchall()
     # record_queryset = stnRecord.objects.raw(q_str)
     for record in total_rows:
         record_all.append({
             'date': record[1].strftime("%Y-%m-%d"),
             'rec_num': record[2],
-            'max': record[3]
+            'rec_sum': record[3]
         })
     return HttpResponse(json.dumps(record_all))
 

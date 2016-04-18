@@ -29,7 +29,7 @@ requirejs.config({
             deps: ['jquery', 'datatables']
         },
         traffic_base: {
-            deps: ['jquery','mapbox']
+            deps: ['jquery','mapbox','d3_chart']
         },
         d3_chart:{
             deps: ['jquery','d3','d3_tip']
@@ -42,7 +42,7 @@ require(['jquery', 'bootstrap','d3'], function ($) {
     require(['traffic_base'], function (tf_b) {
         tf_b.initialize();
     });
-    require(['d3_chart'],function(chart){
-       chart.initialize();
-    });
+    //require(['d3_chart'],function(chart){
+    //   chart.initialize();
+    //});
 });

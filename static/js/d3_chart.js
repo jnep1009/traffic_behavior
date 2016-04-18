@@ -72,7 +72,7 @@ define(['jquery', 'd3', 'd3_tip'], function ($) {
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function (d) {
-                return "<strong>Frequency:</strong> <span style='color:red'>" + d.frequency + "</span>";
+                return "<strong>Date:</strong> <span style='color:red'>" + d + "</span>";
             });
 
         svg.call(tip);
@@ -88,11 +88,10 @@ define(['jquery', 'd3', 'd3_tip'], function ($) {
                     return d.date;
                 })
                 .rollup(function (d) {
-                    return d[0].rec_num / 14826;
+                    return d[0].rec_num / d[0].rec_sum;
                 })
                 .map(json_p);
 
-            console.log(data);
 
             rect.filter(function (d) {
                 return d in data;
@@ -100,8 +99,8 @@ define(['jquery', 'd3', 'd3_tip'], function ($) {
                 .attr("class", function (d) {
                     return "day " + color(data[d]);
                 })
-                .on('mouseover', tip.show)
-                .on('mouseout', tip.hide)
+                //.on('mouseover', tip.show)
+                //.on('mouseout', tip.hide)
                 .select("title")
                 .text(function (d) {
                     return d + ": " + percent(data[d]);
@@ -129,7 +128,8 @@ define(['jquery', 'd3', 'd3_tip'], function ($) {
     }
 
     return {
-        initialize: initialize
+        initialize: initialize,
+        InitialChart: InitialChart
     }
 
 });
