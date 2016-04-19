@@ -10,29 +10,45 @@ define(['jquery', 'mapbox', 'd3', 'd3_chart'], function ($, _, _, d3_chart) {
   var wstnLayer = L.mapbox.featureLayer().addTo(map);
   L.control.scale().addTo(map);
 
-  // Set Customize Marker
+
+
+  /**
+   * Add Events to Layer
+   * @param layer
+   * @private
+   */
+
+  function layerPopupDefault_(layer) {
+    layer.on({
+      mouseover: function (e) {
+        console.log(e.target);
+        e.target.openPopup();
+      },
+      click: function (e) {
+        console.log(e.target);
+      }
+    })
+  }
+
+  /**
+   * Set customize marker
+   */
   camLoc.on('layeradd', function (e) {
     var marker = e.layer,
       feature = marker.feature;
 
     marker.setIcon(L.divIcon(feature.properties.icon));
   });
-  camLoc.on('mouseover', function (e) {
-      e.layer.openPopup();
-  });
-
-  camLoc.on('click', function (e){
-      console.log(e.target);
-  });
 
   wstnLayer.on('layeradd', function (e) {
     var marker = e.layer,
       feature = marker.feature;
-
     marker.setIcon(L.divIcon(feature.properties.icon));
   });
 
-  // Get geoJSON and Camera Location
+  /**
+   * Get Traffic Sites locations
+   */
   $.get('getStation',
     function (data) {
       var json_dat = JSON.parse(data);
@@ -48,7 +64,9 @@ define(['jquery', 'mapbox', 'd3', 'd3_chart'], function ($, _, _, d3_chart) {
       //
       //});
       camLoc.setGeoJSON(cam_mark);
-      // Add Marker for cam
+      camLoc.eachLayer(function (layer) {
+        layerPopupDefault_(layer);
+      });
     });
 
   // // Get weather Station Sites
@@ -68,7 +86,6 @@ define(['jquery', 'mapbox', 'd3', 'd3_chart'], function ($, _, _, d3_chart) {
   //    wstnLayer.setGeoJSON(wstn_locations);
   //    // Add Marker for cam
   //  });
-
 
 
   function initialize() {

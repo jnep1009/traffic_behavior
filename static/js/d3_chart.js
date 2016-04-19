@@ -88,7 +88,8 @@ define(['jquery', 'd3', 'd3_tip'], function ($) {
                     return d.date;
                 })
                 .rollup(function (d) {
-                    return d[0].rec_num / d[0].rec_sum;
+                    console.log(d);
+                    return d[0].rec_num/d[0].rec_sum;
                 })
                 .map(json_p);
 

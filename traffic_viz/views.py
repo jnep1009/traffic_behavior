@@ -106,13 +106,15 @@ def get_record(request):
 
     record_all = []
     cursor = connection.cursor()
-    cursor.execute("select stn_id as id, date_trunc('day',datestamp), " \
-            "cast (sum(record) as integer) as daily, (select sum(avg_record) from stn_record) as avg_daily from stn_record " \
-            "where stn_id=%s group by stn_id, date_trunc('day', datestamp) " \
-            "order by date_trunc('day', datestamp);", ['15451'])
+    cursor.execute("select stn_id as id, date_trunc('day',datestamp)::date, " \
+                   "cast (sum(record) as integer) as daily, sum(avg_record) as avg_daily "
+                   "from stn_record where stn_id=%s "
+                   "group by stn_id, date_trunc('day', datestamp)::date "
+                   "order by date_trunc('day', datestamp)::date;", ['15451'])
     total_rows = cursor.fetchall()
     # record_queryset = stnRecord.objects.raw(q_str)
     for record in total_rows:
+        print record
         record_all.append({
             'date': record[1].strftime("%Y-%m-%d"),
             'rec_num': record[2],
