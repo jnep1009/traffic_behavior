@@ -21,11 +21,10 @@ define(['jquery', 'mapbox', 'd3', 'd3_chart'], function ($, _, _, d3_chart) {
   function layerPopupDefault_(layer) {
     layer.on({
       mouseover: function (e) {
-        console.log(e.target);
         e.target.openPopup();
       },
       click: function (e) {
-        console.log(e.target);
+        d3_chart.InitialChart(e.target.feature.properties.id);
       }
     })
   }
@@ -89,7 +88,6 @@ define(['jquery', 'mapbox', 'd3', 'd3_chart'], function ($, _, _, d3_chart) {
 
 
   function initialize() {
-    d3_chart.InitialChart();
   }
 
   return {

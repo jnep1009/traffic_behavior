@@ -25,6 +25,7 @@ def get_stn(request):
         stn_set['features'].append({
             'type': 'Feature',
             'properties': {
+                'id': each_stn.stn_id,
                 'title': 'Stn Id: ' + each_stn.stn_id + '<br>' + 'Location: ' + each_stn.stn_loc,
                 'icon': {
                     'className': 'fa-icon',
@@ -98,7 +99,8 @@ def get_record(request):
     """ Get record for a given station"""
     if request.method != 'GET':
         return HttpResponseBadRequest()
-    # stnId = request.GET.get('stm_id')
+    stn_id = request.GET.get('stn_id')
+    stn_id = str(stn_id)
     # q_str = "select stn_id as id, date_trunc('day',datestamp), " \
     #         "cast (avg(record) as integer) from stn_record " \
     #         "where stn_id='17696' group by stn_id, date_trunc('day', datestamp) " \
@@ -110,11 +112,10 @@ def get_record(request):
                    "cast (sum(record) as integer) as daily, sum(avg_record) as avg_daily "
                    "from stn_record where stn_id=%s "
                    "group by stn_id, date_trunc('day', datestamp)::date "
-                   "order by date_trunc('day', datestamp)::date;", ['15451'])
+                   "order by date_trunc('day', datestamp)::date;", [stn_id])
     total_rows = cursor.fetchall()
     # record_queryset = stnRecord.objects.raw(q_str)
     for record in total_rows:
-        print record
         record_all.append({
             'date': record[1].strftime("%Y-%m-%d"),
             'rec_num': record[2],
