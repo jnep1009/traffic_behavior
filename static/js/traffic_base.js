@@ -1,7 +1,7 @@
 /**
  * Created by june on 11/23/15.
  */
-define(['jquery', 'mapbox', 'd3', 'd3_chart'], function ($, _, _, d3_chart) {
+define(['jquery', 'mapbox', 'd3', 'd3_chart','d3_linechart'], function ($, _, _, d3_chart, d3_linechart) {
 
   L.mapbox.accessToken = 'pk.eyJ1Ijoic3JjYyIsImEiOiJlTGVCUUZJIn0.wtVBLySJsD08rO1jtAQNJg';
   var map = L.mapbox.map('map_canvas', 'srcc.26921695', {attributionControl: false}).setView([33.7550, -84.3900], 9);
@@ -24,7 +24,9 @@ define(['jquery', 'mapbox', 'd3', 'd3_chart'], function ($, _, _, d3_chart) {
         e.target.openPopup();
       },
       click: function (e) {
-        d3_chart.InitialChart(e.target.feature.properties.id);
+        var stn_id = e.target.feature.properties.id;
+        d3_chart.InitialChart(stn_id);
+        d3_linechart.InitialChart(stn_id);
       }
     })
   }

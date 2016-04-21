@@ -22,4 +22,5 @@ urlpatterns = patterns(
     url(r'^getStation/', get_stn),
     url(r'^getRecord/', get_record),
     url(r'^getWeatherStation/', get_RainStn),
+    url(r'^avgHourly/', sum_hourly),
 )

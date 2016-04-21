@@ -1,14 +1,14 @@
 /**
  * Created by june on 12/2/15.
  */
-define(['jquery', 'd3', 'd3_tip'], function ($) {
+define(['jquery', 'd3'], function ($) {
 
   var width = 1200;
   var height = 105;
   var cellSize = 12;
 
-  var week_days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-  var month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  var week_days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  var month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
   var day = d3.time.format("%w");
   var week = d3.time.format("%U");

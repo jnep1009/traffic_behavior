@@ -11,8 +11,7 @@ requirejs.config({
         'd3': '//cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min',
         'socket_io': '//cdn.socket.io/socket.io-1.3.6',
         'datatables': '//cdn.datatables.net/1.10.7/js/jquery.dataTables.min',
-        'table_tools': 'https://cdnjs.cloudflare.com/ajax/libs/datatables-tabletools/2.1.5/js/TableTools.min',
-        'd3_tip': 'http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3'
+        'table_tools': 'https://cdnjs.cloudflare.com/ajax/libs/datatables-tabletools/2.1.5/js/TableTools.min'
     },
     'shim': {
         bootstrap: {
@@ -29,10 +28,13 @@ requirejs.config({
             deps: ['jquery', 'datatables']
         },
         traffic_base: {
-            deps: ['jquery','mapbox','d3_chart']
+            deps: ['jquery','mapbox','d3_chart', 'd3_linechart']
         },
         d3_chart:{
-            deps: ['jquery','d3','d3_tip']
+            deps: ['jquery','d3']
+        },
+        d3_linechart:{
+            deps: ['jquery', 'd3']
         }
     }
 });

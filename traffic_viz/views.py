@@ -123,6 +123,15 @@ def get_record(request):
         })
     return HttpResponse(json.dumps(record_all))
 
+def sum_hourly(request):
+    """ Get average hourly record"""
+    if request.method != 'GET':
+        return HttpResponseBadRequest()
+    cursor = connection.cursor()
+
+    return HttpResponse(json.dumps('cool'))
+
+
 
 def index(request):
     """Handle index page request."""
