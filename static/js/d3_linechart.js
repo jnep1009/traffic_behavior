@@ -10,133 +10,143 @@ define(['jquery', 'd3'], function ($) {
     contextHeight = 50,
     contextWidth = width * .5;
 
+  var svg = d3.select('#corre_chart')
+    .append("svg")
+    .attr("width", (width + margin.left + margin.right))
+    .attr("height", (height + margin.top + margin.bottom));
 
-  function InitialChart(stn_id) {
-
-    var exist = d3.select("#corre_chart").selectAll("svg");
-    if (exist) {
-      exist.remove();
+  function createChart(data) {
+    var factors = [],
+      charts = [],
+      maxDataPoint = 0;
+    for (var prop in data[0]) {
+      if (data[0].hasOwnProperty(prop)) {
+        if (prop != 'hour') {
+          factors.push(prop);
+        }
+      }
     }
+    var factorCounts = factors.length,
+      startHour = 0,
+      endHour = 24,
+      chartHeight = height * (1 / factorCounts);
 
-    var x = d3.scale.linear()
-      .range([0, width]);
+    data.forEach(function (d) {
+      for (var prop in d) {
+        if (d.hasOwnProperty(prop)) {
+          d[prop] = parseFloat(d[prop]);
 
-    var y = d3.scale.linear()
-      .range([height, 0]);
+          if (d[prop] > maxDataPoint) {
+            maxDataPoint = d[prop];
+          }
+        }
+      }
+    });
 
-    var color = d3.scale.ordinal().range(["#9EE89D", "#8CABFF", "#E86A81"]);
+    for (var i = 0; i < factorCounts; i++) {
+      charts.push(new Chart({
+        data: data.slice(), // copy the array
+        id: i,
+        name: factors[i],
+        width: width,
+        height: height * (1 / factorCounts),
+        maxDataPoint: maxDataPoint,
+        svg: svg,
+        margin: margin,
+        showBottomAxis: (i == factors.length - 1)
+      }));
+    }
+  }
 
-    var xAxis = d3.svg.axis()
-      .scale(x)
-      .orient("bottom");
+  function Chart(options) {
+    this.chartData = options.data;
+    this.width = options.width;
+    this.height = options.height;
+    this.maxDataPoint = options.maxDataPoint;
+    this.svg = options.svg;
+    this.id = options.id;
+    this.name = options.name;
+    this.margin = options.margin;
+    this.showBottomAxis = options.showBottomAxis;
+    var localName = this.name;
 
-    var yAxis = d3.svg.axis()
-      .scale(y)
-      .orient("left");
+    /* XScale is time based */
+    this.xScale = d3.scale.linear()
+      .range([0, this.width])
+      .domain(d3.extent(this.chartData.map(function (d) {
+        return d.hour;
+      })));
 
-    var line = d3.svg.line()
+    /* YScale is linear based on the maxData Point we found earlier */
+    this.yScale = d3.scale.linear()
+      .range([this.height, 0])
+      .domain([0, this.maxDataPoint]);
+
+    var xS = this.xScale;
+    var yS = this.yScale;
+
+    this.area = d3.svg.line()
       .interpolate("basis")
       .x(function (d) {
-        return x(d.hour);
+        return xS(d.hour);
       })
       .y(function (d) {
-        return y(d.all_factor);
+        return yS(d[localName]);
       });
 
-    var svg = d3.select("#corre_chart").append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-      .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    this.svg.append("defs").append("clipPath")
+      .attr("id", "clip-" + this.id)
+      .append("rect")
+      .attr("width", this.width)
+      .attr("height", this.height);
 
-    function make_y_axis() {
-      return d3.svg.axis()
-        .scale(y)
-        .orient("left")
+    /*
+     Assign it a class so we can assign a fill color
+     And position it on the page
+     */
+
+    this.chartContainer = svg.append("g")
+      .attr('class', this.name.toLowerCase())
+      .attr("transform", "translate(" + this.margin.left + "," + (this.margin.top + (this.height * this.id) + (10 * this.id)) + ")");
+
+    /* We've created everything, let's actually add it to the page */
+
+    this.chartContainer.append("path")
+      .data([this.chartData])
+      .attr("class", "line")
+      .attr("clip-path", "url(#clip-" + this.id + ")")
+      .attr("d", this.area);
+
+    this.xAxisBottom = d3.svg.axis().scale(this.xScale).orient("bottom");
+
+    /* Only want a bottom axis on the last country */
+
+    if (this.showBottomAxis) {
+      this.chartContainer.append("g")
+        .attr("class", "x axis bottom")
+        .attr("transform", "translate(0," + this.height + ")")
+        .call(this.xAxisBottom);
     }
 
-    /**
-     * Get JSON from postgresql
-     */
+    this.yAxis = d3.svg.axis().scale(this.yScale).orient("left").ticks(5);
+
+    this.chartContainer.append("g")
+      .attr("class", "y axis")
+      .attr("transform", "translate(-15,0)")
+      .call(this.yAxis);
+
+    this.chartContainer.append("text")
+      .attr("class", "country-title")
+      .attr("transform", "translate(15,40)")
+      .text(this.name);
+
+  }
+
+
+  function InitialChart(stn_id) {
     var get_url = 'avgHourly?stn_id=' + stn_id;
-
     d3.json(get_url, function (error, data) {
-      if (error) throw error;
-
-      color.domain(d3.keys(data[0]).filter(function (key) {
-        return key !== "hour";
-      }));
-
-      var traffic_factor = color.domain().map(function (each_factor) {
-        return {
-          each_factor: each_factor,
-          values: data.map(function (d) {
-            return {hour: d.hour, all_factor: +d[each_factor]}
-          })
-        }
-      });
-      console.log(traffic_factor);
-
-      x.domain(d3.extent(data, function (d) {
-          return d.hour;
-        })
-      );
-
-      y.domain([
-        d3.min(traffic_factor, function (c) {
-          return d3.min(c.values, function (v) {
-            return v.all_factor;
-          });
-        }),
-        d3.max(traffic_factor, function (c) {
-          return d3.max(c.values, function (v) {
-            return v.all_factor;
-          });
-        })
-      ]);
-
-      svg.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
-        .call(xAxis);
-
-      svg.append("g")
-        .attr("class", "y axis")
-        .call(yAxis)
-        .append("text")
-        .attr("transform", "translate(-65," + 20 * 3.5 + ")rotate(-90)")
-        .attr("y", 13)
-        .style("text-anchor", "middle")
-        .text("traffic volume");
-
-
-      //.attr("transform", "translate(-40," + cellSize * 3.5 + ")rotate(-90)")
-      //  .style("text-anchor", "middle")
-      //  .text(function (d) {
-      //    return d;
-      //  });
-
-      svg.append("g")
-        .attr("class", "grid")
-        .call(make_y_axis()
-          .tickSize(-width, 0, 0)
-          .tickFormat("")
-        );
-
-      var traffic = svg.selectAll(".traffic")
-        .data(traffic_factor)
-        .enter().append("g")
-        .attr("class", "traffic");
-
-      traffic.append("path")
-        .attr("class", "line")
-        .attr("d", function (d) {
-          return line(d.values);
-        })
-        .style("stroke", function (d) {
-          return color(d.each_factor);
-        });
-
+      createChart(data);
     });
   }
 
