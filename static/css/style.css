@@ -1,5 +1,5 @@
 #map_canvas{
-    height:600px
+    height:550px
 }
 html, body {
     height: 100%;
@@ -31,5 +31,28 @@ html, body {
 .RdYlGn .q2-11{fill:rgb(102,189,99)}
 .RdYlGn .q1-11{fill:rgb(26,152,80)}
 .RdYlGn .q0-11{fill:rgb(0,104,55)}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+.grid .tick {
+    stroke: lightgrey;
+    stroke-opacity: 0.7;
+    shape-rendering: crispEdges;
+}
+.grid path {
+  stroke-width: 0;
+}
 
 
