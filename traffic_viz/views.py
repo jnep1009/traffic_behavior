@@ -135,18 +135,32 @@ def sum_hourly(request):
     cursor.execute("select * from compare_traffic where stn_id =%s", [stn_id])
     record_rows = cursor.fetchall()
     for record in record_rows:
-        print record
         records_arr.append({
             'hour': record[7],
+            'precipitation': {
+                '0': record[1],
+                '1': record[2],
+                '2': record[6]
+            },
+            'visibility': {
+                '0': record[3],
+                '1': record[4]
+            },
+            'wind':{
+                '0': record[5],
+                '1': record[6]
+            }
+            # 'hour': record[7],
             # 'without_rain': record[1],
             # 'with_rain': record[2],
-            'good_vis': record[3],
-            'bad_vis': record[4],
+            # 'good_vis': record[3],
+            # 'bad_vis': record[4],
             # 'no_wind': record[5],
             # 'windy': record[6],
             # 'light_rain': record[8],
             # 'heavy_rain': record[9]
         })
+    print(records_arr)
     return HttpResponse(json.dumps(records_arr))
 
 
