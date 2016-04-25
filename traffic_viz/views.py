@@ -137,11 +137,6 @@ def sum_hourly(request):
     for record in record_rows:
         records_arr.append({
             'hour': record[7],
-            'precipitation': {
-                '0': record[1],
-                '1': record[2],
-                '2': record[6]
-            },
             'visibility': {
                 '0': record[3],
                 '1': record[4]
@@ -149,7 +144,19 @@ def sum_hourly(request):
             'wind':{
                 '0': record[5],
                 '1': record[6]
+            },
+            'precipitation':{
+                '0': record[1],
+                '1': record[2]
             }
+            # 'light rain': {
+            #     '0': record[1],
+            #     '1': record[8]
+            # },
+            # 'heavy rain':{
+            #     '0': record[1],
+            #     '1': record[9]
+            # }
             # 'hour': record[7],
             # 'without_rain': record[1],
             # 'with_rain': record[2],

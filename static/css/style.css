@@ -1,5 +1,5 @@
 #map_canvas{
-    height:550px
+    height:450px
 }
 html, body {
     height: 100%;
@@ -34,6 +34,12 @@ html, body {
 
 
 .line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+.line2 {
   fill: none;
   stroke: steelblue;
   stroke-width: 1.5px;
