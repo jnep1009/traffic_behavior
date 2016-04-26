@@ -1,8 +1,8 @@
-from django.shortcuts import render_to_response
-from django.template import RequestContext
 import json
 import requests
-import pandas as pd
+import numpy as np
+from django.shortcuts import render_to_response
+from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.db import connection
 from traffic_viz.models import stnMeta, stnRecord, weatherStation
@@ -139,31 +139,14 @@ def sum_hourly(request):
                 '0': record[3],
                 '1': record[4]
             },
-            'wind':{
+            'wind': {
                 '0': record[5],
                 '1': record[6]
             },
-            'precipitation':{
+            'precipitation': {
                 '0': record[1],
                 '1': record[2]
             }
-            # 'light rain': {
-            #     '0': record[1],
-            #     '1': record[8]
-            # },
-            # 'heavy rain':{
-            #     '0': record[1],
-            #     '1': record[9]
-            # }
-            # 'hour': record[7],
-            # 'without_rain': record[1],
-            # 'with_rain': record[2],
-            # 'good_vis': record[3],
-            # 'bad_vis': record[4],
-            # 'no_wind': record[5],
-            # 'windy': record[6],
-            # 'light_rain': record[8],
-            # 'heavy_rain': record[9]
         })
     return HttpResponse(json.dumps(records_arr))
 
@@ -174,7 +157,7 @@ def daily_hour(request):
     stn_id = request.GET.get('stn_id')
     date = request.GET.get('date')
     print(stn_id,date)
-    hourly_arr = []
+    hour_arr = []
     cursor = connection.cursor()
     # cursor.execute("select t.stn, t.hour_of_day, avg(record) from("
     #                " select stn_id as stn, extract(dow from datestamp) as date_of_week, "
@@ -184,8 +167,22 @@ def daily_hour(request):
     cursor.execute("select extract(hour from datestamp), record "
                    "from stn_record where stn_id = %s and date_trunc('day',datestamp)::date = %s order by datestamp", [stn_id, date])
     hourly_rows = cursor.fetchall()
-    print(hourly_rows)
-    return HttpResponse(json.dumps('oh'))
+    for record in hourly_rows:
+        hour_record = int(record[0]) + 1
+        if record[0] < 12:
+            hour_arr.append({
+                'day': 1,
+                'hour': hour_record,
+                'value': record[1]
+            })
+        else:
+            hour_arr.append({
+                'day': 2,
+                'hour': hour_record - 12,
+                'value': record[1]
+            })
+    print(hour_arr)
+    return HttpResponse(json.dumps(hour_arr))
 
 def index(request):
     """Handle index page request."""

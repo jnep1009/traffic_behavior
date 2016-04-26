@@ -10,7 +10,7 @@ define(['jquery', 'd3'], function ($) {
       }
       var margin = {top: 20, right: 90, bottom: 50, left: 100},
         width = 780 - margin.left - margin.right,
-        height = 600 - margin.top - margin.bottom,
+        height = 400 - margin.top - margin.bottom,
         contextHeight = 50,
         contextWidth = width * .5;
 
@@ -26,7 +26,7 @@ define(['jquery', 'd3'], function ($) {
 
       svg.append("text")
         .attr("font-size", "15px")
-        .attr("transform", "translate(695,585)")
+        .attr("transform", "translate(695,385)")
         .text("Hour");
       var factors = [],
         charts = [],
@@ -38,7 +38,6 @@ define(['jquery', 'd3'], function ($) {
         })
         .entries(data);
 
-      console.log(dataNest[0]);
 
 
       for (var prop in dataNest[0].values[0]) {
