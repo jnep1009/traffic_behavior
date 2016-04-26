@@ -31,9 +31,12 @@ requirejs.config({
             deps: ['jquery','mapbox','d3_chart', 'd3_linechart']
         },
         d3_chart:{
-            deps: ['jquery','d3']
+            deps: ['jquery','d3', 'd3_hourly_heatmap']
         },
         d3_linechart:{
+            deps: ['jquery', 'd3']
+        },
+        d3_hourly_heatmap:{
             deps: ['jquery', 'd3']
         }
     }

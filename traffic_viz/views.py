@@ -74,7 +74,6 @@ def get_RainStn(request):
         'features': []
     }
     for each_stn in stn_queryset:
-        print(each_stn)
         stn_set['features'].append({
             'type': 'Feature',
             'properties': {
@@ -124,12 +123,11 @@ def get_record(request):
     return HttpResponse(json.dumps(record_all))
 
 def sum_hourly(request):
-    """ Get average hourly record"""
+    """ Get average daily record"""
     if request.method != 'GET':
         return HttpResponseBadRequest()
     stn_id = request.GET.get('stn_id')
     stn_id = str(stn_id)
-    print(stn_id)
     records_arr = []
     cursor = connection.cursor()
     cursor.execute("select * from compare_traffic where stn_id =%s", [stn_id])
@@ -167,10 +165,27 @@ def sum_hourly(request):
             # 'light_rain': record[8],
             # 'heavy_rain': record[9]
         })
-    print(records_arr)
     return HttpResponse(json.dumps(records_arr))
 
-
+def daily_hour(request):
+    """ Get average hourly record"""
+    if request.method != 'GET':
+        return HttpResponseBadRequest()
+    stn_id = request.GET.get('stn_id')
+    date = request.GET.get('date')
+    print(stn_id,date)
+    hourly_arr = []
+    cursor = connection.cursor()
+    # cursor.execute("select t.stn, t.hour_of_day, avg(record) from("
+    #                " select stn_id as stn, extract(dow from datestamp) as date_of_week, "
+    #                "extract(hour from datestamp) as hour_of_day, record "
+    #                "from stn_record where stn_id = '%s') as t "
+    #                "where t.date_of_week in ('1','2','3','4','5') group by 1,2 order by 2;", [stn_id, date])
+    cursor.execute("select extract(hour from datestamp), record "
+                   "from stn_record where stn_id = %s and date_trunc('day',datestamp)::date = %s order by datestamp", [stn_id, date])
+    hourly_rows = cursor.fetchall()
+    print(hourly_rows)
+    return HttpResponse(json.dumps('oh'))
 
 def index(request):
     """Handle index page request."""

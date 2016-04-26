@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
 from django.conf.urls import patterns, url
-from traffic_viz.views import index, get_stn, get_record, get_RainStn, sum_hourly
+from traffic_viz.views import index, get_stn, get_record, get_RainStn, sum_hourly, daily_hour
 
 urlpatterns = patterns(
     '',
@@ -23,4 +23,5 @@ urlpatterns = patterns(
     url(r'^getRecord/', get_record),
     url(r'^getWeatherStation/', get_RainStn),
     url(r'^avgHourly/', sum_hourly),
+    url(r'^avgEachDay', daily_hour)
 )
