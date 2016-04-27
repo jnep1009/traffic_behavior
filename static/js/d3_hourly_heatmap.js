@@ -3,16 +3,16 @@
  */
 define(['jquery', 'd3'], function ($) {
 
-  var margin = margin = {top: 50, right: 0, bottom: 100, left: 150},
-    height = 450 - margin.top - margin.bottom,
-    width = 430 - margin.left - margin.right,
+  var margin = margin = {top: 50, right: 0, bottom: 50, left: 40},
+    height = 330 - margin.top - margin.bottom,
+    width = 320 - margin.left - margin.right,
     gridSize = Math.floor(width / 24),
     legendElementWidth = gridSize * 2,
     buckets = 9,
     colors = ["#ffffd9", "#edf8b1", "#c7e9b4", "#7fcdbb", "#41b6c4", "#1d91c0", "#225ea8", "#253494", "#081d58"], // alternatively colorbrewer.YlGnBu[9]
     days = ["Traffic","Precipitation"],
     times = [
-      "0am","1am", "2am", "3am", "4am", "5am", "6am", "7am", "8am", "9am", "10am", "11am", "12pm",
+      "12am","1am", "2am", "3am", "4am", "5am", "6am", "7am", "8am", "9am", "10am", "11am", "12pm",
       "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm", "8pm", "9pm", "10pm", "11pm"
     ];
 
@@ -41,9 +41,9 @@ define(['jquery', 'd3'], function ($) {
   var dayLabels = svg.selectAll(".dayLabel")
     .data(days)
     .enter().append("text")
-    .text(function (d) {
-      return d;
-    })
+    .attr('font-family', 'FontAwesome')
+    .attr('font-size', '20px')
+    .text('\uf118')
     .attr("x", function (d, i) {
       return i * gridSize;
     })
