@@ -3,15 +3,18 @@
  */
 define(['jquery', 'd3'], function ($) {
 
-  var margin = margin = {top: 50, right: 0, bottom: 100, left: 30},
-    height = 960 - margin.top - margin.bottom,
+  var margin = margin = {top: 50, right: 0, bottom: 100, left: 150},
+    height = 450 - margin.top - margin.bottom,
     width = 430 - margin.left - margin.right,
     gridSize = Math.floor(width / 24),
     legendElementWidth = gridSize * 2,
     buckets = 9,
     colors = ["#ffffd9", "#edf8b1", "#c7e9b4", "#7fcdbb", "#41b6c4", "#1d91c0", "#225ea8", "#253494", "#081d58"], // alternatively colorbrewer.YlGnBu[9]
-    days = ["am", "pm"],
-    times = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
+    days = ["Traffic","Precipitation"],
+    times = [
+      "0am","1am", "2am", "3am", "4am", "5am", "6am", "7am", "8am", "9am", "10am", "11am", "12pm",
+      "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm", "8pm", "9pm", "10pm", "11pm"
+    ];
 
   var svg = d3.select("#hourly_heatmap").append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -60,7 +63,6 @@ define(['jquery', 'd3'], function ($) {
 
       var cards = svg.selectAll(".hour")
         .data(data, function (d) {
-          console.log(d);
           return d.day + ':' + d.hour
         });
 

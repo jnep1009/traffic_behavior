@@ -59,7 +59,7 @@ define(['jquery', 'd3', 'd3_hourly_heatmap'], function ($, _, hourly_heatmap) {
             svg.append("text")
                 .attr("transform", "translate(-5," + cellSize * (i + 1) + ")")
                 .style("text-anchor", "end")
-                .attr("dy", "-.5em")
+                .attr("dy", "-0.1em")
                 .text(function (d) {
                     return week_days[i];
                 });
