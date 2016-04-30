@@ -39,7 +39,7 @@ define(['jquery', 'd3', 'd3_hourly_heatmap'], function ($, _, hourly_heatmap) {
             .attr("width", '220%')
             .attr("height", '350%')
             .attr("data-height", '0.5678')
-            .attr("viewBox", '220 0 1200 105')
+            .attr("viewBox", '220 0 1350 105')
             .attr("class", "RdYlGn")
             .append("g")
             .attr("transform", "translate(" + ((width - cellSize * 53) / 2) + "," + (height - cellSize * 7 - 1) + ")");
@@ -59,7 +59,7 @@ define(['jquery', 'd3', 'd3_hourly_heatmap'], function ($, _, hourly_heatmap) {
             svg.append("text")
                 .attr("transform", "translate(-5," + cellSize * (i + 1) + ")")
                 .style("text-anchor", "end")
-                .attr("dy", "-.5em")
+                .attr("dy", "-0.1em")
                 .text(function (d) {
                     return week_days[i];
                 });

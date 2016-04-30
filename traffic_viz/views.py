@@ -156,7 +156,6 @@ def daily_hour(request):
         return HttpResponseBadRequest()
     stn_id = request.GET.get('stn_id')
     date = request.GET.get('date')
-    print(stn_id,date)
     hour_arr = []
     cursor = connection.cursor()
     # cursor.execute("select t.stn, t.hour_of_day, avg(record) from("
@@ -164,24 +163,22 @@ def daily_hour(request):
     #                "extract(hour from datestamp) as hour_of_day, record "
     #                "from stn_record where stn_id = '%s') as t "
     #                "where t.date_of_week in ('1','2','3','4','5') group by 1,2 order by 2;", [stn_id, date])
-    cursor.execute("select extract(hour from datestamp), record "
+    cursor.execute("select extract(hour from datestamp), record, avg_record, idw "
                    "from stn_record where stn_id = %s and date_trunc('day',datestamp)::date = %s order by datestamp", [stn_id, date])
     hourly_rows = cursor.fetchall()
     for record in hourly_rows:
         hour_record = int(record[0]) + 1
-        if record[0] < 12:
-            hour_arr.append({
+        print(round((float(record[1])/float(record[2])),2))
+        hour_arr.append({
                 'day': 1,
                 'hour': hour_record,
-                'value': record[1]
-            })
-        else:
-            hour_arr.append({
+                'value': round((float(record[1])/float(record[2])),2)
+        })
+        hour_arr.append({
                 'day': 2,
-                'hour': hour_record - 12,
-                'value': record[1]
-            })
-    print(hour_arr)
+                'hour': hour_record,
+                'value': record[3] * 100
+        })
     return HttpResponse(json.dumps(hour_arr))
 
 def index(request):
