@@ -4,7 +4,7 @@
 define(['jquery', 'd3'], function ($) {
 
   var margin = margin = {top: 50, right: 0, bottom: 100, left: 30},
-    height = 960 - margin.top - margin.bottom,
+    height = 300 - margin.top - margin.bottom,
     width = 430 - margin.left - margin.right,
     gridSize = Math.floor(width / 24),
     legendElementWidth = gridSize * 2,
