@@ -108,7 +108,7 @@ def get_record(request):
     record_all = []
     cursor = connection.cursor()
     cursor.execute("select stn_id as id, date_trunc('day',datestamp)::date, " \
-                   "cast (sum(record) as integer) as daily, sum(avg_record) as avg_daily "
+                   "cast (sum(record) as integer) as daily, sum(avg_hourly_record) as avg_daily "
                    "from stn_record where stn_id=%s "
                    "group by stn_id, date_trunc('day', datestamp)::date "
                    "order by date_trunc('day', datestamp)::date;", [stn_id])
@@ -134,18 +134,22 @@ def sum_hourly(request):
     record_rows = cursor.fetchall()
     for record in record_rows:
         records_arr.append({
-            'hour': record[7],
+            'hour': record[1],
             'visibility': {
-                '0': record[3],
-                '1': record[4]
+                '0': record[4],
+                '1': record[5]
             },
             'wind': {
-                '0': record[5],
-                '1': record[6]
+                '0': record[6],
+                '1': record[7]
             },
             'precipitation': {
-                '0': record[1],
-                '1': record[2]
+                '0': record[2],
+                '1': record[3]
+            },
+            'temperature':{
+                '0': record[10],
+                '1': record[11]
             }
         })
     return HttpResponse(json.dumps(records_arr))
@@ -163,7 +167,7 @@ def daily_hour(request):
     #                "extract(hour from datestamp) as hour_of_day, record "
     #                "from stn_record where stn_id = '%s') as t "
     #                "where t.date_of_week in ('1','2','3','4','5') group by 1,2 order by 2;", [stn_id, date])
-    cursor.execute("select extract(hour from datestamp), record, avg_record, idw "
+    cursor.execute("select extract(hour from datestamp), record, avg_hourly_record, prec_idw "
                    "from stn_record where stn_id = %s and date_trunc('day',datestamp)::date = %s order by datestamp", [stn_id, date])
     hourly_rows = cursor.fetchall()
     for record in hourly_rows:

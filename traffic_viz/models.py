@@ -32,4 +32,4 @@ class weatherStation(models.Model):
     lng = models.FloatField(max_length=20, blank=True, null=True)
 
     class Meta:
-        db_table = 'ish_wstn_record'
+        db_table = 'ish_record'

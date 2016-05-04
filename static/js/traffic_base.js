@@ -75,15 +75,6 @@ define(['jquery', 'mapbox', 'd3', 'd3_chart','d3_linechart'], function ($, _, _,
   //  function (data) {
   //    var json_dat = JSON.parse(data);
   //    var wstn_locations = json_dat['wstn'];
-  //
-  //    // Add Layer for county
-  //    //countyLayer.setGeoJSON(geoCounty);
-  //    //countyLayer.setStyle({
-  //    //  fillColor: '#536872',
-  //    //  color: '#36454f',
-  //    //  fillOpacity: 0.2
-  //    //
-  //    //});
   //    wstnLayer.setGeoJSON(wstn_locations);
   //    // Add Marker for cam
   //  });
