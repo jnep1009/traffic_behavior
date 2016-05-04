@@ -10,7 +10,7 @@ define(['jquery', 'd3'], function ($) {
       }
       var margin = {top: 20, right: 90, bottom: 50, left: 100},
         width = 780 - margin.left - margin.right,
-        height = 400 - margin.top - margin.bottom,
+        height = 800 - margin.top - margin.bottom,
         contextHeight = 50,
         contextWidth = width * .5;
 
