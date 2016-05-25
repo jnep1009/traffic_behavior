@@ -133,24 +133,16 @@ def sum_hourly(request):
     cursor.execute("select * from compare_traffic where stn_id =%s", [stn_id])
     record_rows = cursor.fetchall()
     for record in record_rows:
-        records_arr.append({
+         records_arr.append({
             'hour': record[1],
-            'visibility': {
-                '0': record[4],
-                '1': record[5]
-            },
-            'wind': {
-                '0': record[6],
-                '1': record[7]
-            },
-            'precipitation': {
-                '0': record[2],
-                '1': record[3]
-            },
-            'temperature':{
-                '0': record[10],
-                '1': record[11]
-            }
+            # 'without_rain': record[1],
+            # 'with_rain': record[2],
+            'good_vis': record[4],
+            'bad_vis': record[5],
+            # 'no_wind': record[5],
+            # 'windy': record[6],
+            # 'light_rain': record[8],
+            # 'heavy_rain': record[9]
         })
     return HttpResponse(json.dumps(records_arr))
 
@@ -167,7 +159,7 @@ def daily_hour(request):
     #                "extract(hour from datestamp) as hour_of_day, record "
     #                "from stn_record where stn_id = '%s') as t "
     #                "where t.date_of_week in ('1','2','3','4','5') group by 1,2 order by 2;", [stn_id, date])
-    cursor.execute("select extract(hour from datestamp), record, avg_hourly_record, prec_idw "
+    cursor.execute("select extract(hour from datestamp), record, avg_hourly_record, prec_idw, vis_idw, temp_idw, wind_idw "
                    "from stn_record where stn_id = %s and date_trunc('day',datestamp)::date = %s order by datestamp", [stn_id, date])
     hourly_rows = cursor.fetchall()
     for record in hourly_rows:
@@ -181,7 +173,22 @@ def daily_hour(request):
         hour_arr.append({
                 'day': 2,
                 'hour': hour_record,
-                'value': record[3] * 100
+                'value': record[3]
+        })
+        hour_arr.append({
+                'day': 3,
+                'hour': hour_record,
+                'value': record[4]
+        })
+        hour_arr.append({
+                'day': 4,
+                'hour': hour_record,
+                'value': record[5]
+        })
+        hour_arr.append({
+                'day': 5,
+                'hour': hour_record,
+                'value': record[6]
         })
     return HttpResponse(json.dumps(hour_arr))
 
