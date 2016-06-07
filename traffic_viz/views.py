@@ -165,30 +165,35 @@ def daily_hour(request):
     for record in hourly_rows:
         hour_record = int(record[0]) + 1
         print(round((float(record[1])/float(record[2])),2))
+        # record
         hour_arr.append({
                 'day': 1,
                 'hour': hour_record,
                 'value': round((float(record[1])/float(record[2])),2)
         })
+        # prec
         hour_arr.append({
                 'day': 2,
                 'hour': hour_record,
-                'value': record[3]
+                'value': record[3]/0.05
         })
+        # vis
         hour_arr.append({
                 'day': 3,
                 'hour': hour_record,
-                'value': record[4]
+                'value': record[4]/9
         })
+        # temp
         hour_arr.append({
                 'day': 4,
                 'hour': hour_record,
-                'value': record[5]
+                'value': record[5]/60
         })
+        # wind
         hour_arr.append({
                 'day': 5,
                 'hour': hour_record,
-                'value': record[6]
+                'value': record[6]/6
         })
     return HttpResponse(json.dumps(hour_arr))
 

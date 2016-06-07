@@ -41,10 +41,19 @@ define(['jquery', 'd3'], function ($) {
 
   var dayLabels = svg.selectAll(".dayLabel")
     .data(days)
-    .enter().append("text")
-    .attr('font-family', 'FontAwesome')
-    .attr('font-size', '20px')
-    .text('\uf118')
+    .enter()
+      //.append("image")
+    //.attr("xlink:href", "https://github.com/favicon.ico")
+    //.attr("x", -8)
+    //.attr("y", -8)
+    //.attr("width", 15)
+    //.attr("height", 15)
+
+      .append('text')
+    .style('font-family', 'FontAwesome')
+    .style('font-size', '10px')
+    .text(function(d) { return '\uf083' })
+
     .attr("x", function (d, i) {
       return i * gridSize;
     })
