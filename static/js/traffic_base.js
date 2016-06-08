@@ -9,6 +9,10 @@ define(['jquery', 'mapbox', 'd3', 'd3_chart','d3_linechart'], function ($, _, _,
   var camLoc = L.mapbox.featureLayer().addTo(map);
   var wstnLayer = L.mapbox.featureLayer().addTo(map);
   L.control.scale().addTo(map);
+  var line_prec = $('#line_prec');
+  var line_vis = $('#line_vis');
+  var line_temp = $('#line_temp');
+  var line_wind = $('#line_wind');
 
 
 
@@ -26,7 +30,9 @@ define(['jquery', 'mapbox', 'd3', 'd3_chart','d3_linechart'], function ($, _, _,
       click: function (e) {
         var stn_id = e.target.feature.properties.id;
         d3_chart.InitialChart(stn_id);
-        d3_linechart.InitialChart(stn_id);
+        d3_linechart.InitialChart(stn_id, 'prec');
+        $("#stn_id_hid").text(stn_id);
+        $("#button_weather").show();
       }
     })
   }
@@ -80,7 +86,44 @@ define(['jquery', 'mapbox', 'd3', 'd3_chart','d3_linechart'], function ($, _, _,
   //  });
 
 
+
+
+
   function initialize() {
+    line_prec.click(function(){
+      var stn_id = $('#stn_id_hid').text();
+      d3_linechart.InitialChart(stn_id,'prec');
+      line_prec.css("background-color","#6C7B8B");
+      line_vis.css("background-color","#222222");
+      line_temp.css("background-color","#222222");
+      line_wind.css("background-color","#222222");
+    });
+    line_vis.click(function(){
+      var stn_id = $('#stn_id_hid').text();
+      d3_linechart.InitialChart(stn_id,'vis');
+      line_prec.css("background-color","#222222");
+      line_vis.css("background-color","#6C7B8B");
+      line_temp.css("background-color","#222222");
+      line_wind.css("background-color","#222222");
+    });
+    line_temp.click(function(){
+      var stn_id = $('#stn_id_hid').text();
+      d3_linechart.InitialChart(stn_id,'temp');
+      line_prec.css("background-color","#222222");
+      line_vis.css("background-color","#222222");
+      line_temp.css("background-color","#6C7B8B");
+      line_wind.css("background-color","#222222");
+    });
+    line_wind.click(function(){
+      var stn_id = $('#stn_id_hid').text();
+      d3_linechart.InitialChart(stn_id,'wind');
+      line_prec.css("background-color","#222222");
+      line_vis.css("background-color","#222222");
+      line_temp.css("background-color","#222222");
+      line_wind.css("background-color","#6C7B8B");
+    });
+    $("#hourly_heatmap").hide();
+    $("#button_weather").hide();
   }
 
   return {

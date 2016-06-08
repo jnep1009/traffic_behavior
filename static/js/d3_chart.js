@@ -154,6 +154,7 @@ define(['jquery', 'd3', 'd3_hourly_heatmap'], function ($, _, hourly_heatmap) {
                 .on('click', function (d) {
                     // d -> date, stn_id
                     hourly_heatmap.getDailySummary(stn_id, d);
+                    $("#hourly_heatmap").show();
                 });
             $("rect").tooltip({container: 'body', html: true, placement: 'top'});
         });

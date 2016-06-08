@@ -4,14 +4,14 @@
 define(['jquery', 'd3'], function ($) {
 
 
-    var margin = {top: 20, right: 80, bottom: 30, left: 70},
-        width = 780 - margin.left - margin.right,
-        height = 350 - margin.top - margin.bottom,
+    var margin = {top: 20, right: 130, bottom: 30, left: 80},
+        width = 730 - margin.left - margin.right,
+        height = 250 - margin.top - margin.bottom,
         contextHeight = 50,
         contextWidth = width * .5;
 
 
-    function InitialChart(stn_id) {
+    function InitialChart(stn_id, weather_var) {
 
         var exist = d3.select("#corre_chart").selectAll("svg");
         if (exist) {
@@ -58,7 +58,7 @@ define(['jquery', 'd3'], function ($) {
         /**
          * Get JSON from postgresql
          */
-        var get_url = 'avgHourly?stn_id=' + stn_id;
+        var get_url = 'avgHourly?stn_id=' + stn_id +'&var=' + weather_var;
 
         d3.json(get_url, function (error, data) {
             if (error) throw error;
@@ -100,7 +100,7 @@ define(['jquery', 'd3'], function ($) {
                 .attr("transform", "translate(0," + height + ")")
                 .call(xAxis)
                 .append("text")
-                .attr("x", 680)
+                .attr("x", 550)
                 .style("text-anchor", "middle")
                 .text("hour");
 
@@ -109,7 +109,7 @@ define(['jquery', 'd3'], function ($) {
                 .call(yAxis)
                 .append("text")
                 .attr("transform", "translate(-65," + 20 * 3.5 + ")rotate(-90)")
-                .attr("y", 13)
+                .attr("y", 0)
                 .style("text-anchor", "middle")
                 .text("traffic volume");
 

@@ -116,7 +116,7 @@ g.context rect.background {
 }
 
 rect.bordered {
-    stroke: #E6E6E6;
+    stroke: #939393;
     stroke-width: 2px;
 }
 
