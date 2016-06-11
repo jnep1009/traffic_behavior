@@ -101,7 +101,7 @@ define(['jquery', 'd3', 'd3_hourly_heatmap'], function ($, _, hourly_heatmap) {
             .enter().append("g")
             .attr("class", "legend")
             .attr("transform", function (d, i) {
-                return "translate(" + (((i + 1) * 50) + 20) + ",0)";
+                return "translate(" + (((i + 1) * 50) + 10) + ",0)";
             });
 
         legend.append("text")
