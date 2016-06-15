@@ -75,7 +75,6 @@ define(['jquery', 'd3'], function ($) {
                     })
                 }
             });
-            console.log(traffic_factor);
 
             x.domain(d3.extent(data, function (d) {
                     return d.hour;

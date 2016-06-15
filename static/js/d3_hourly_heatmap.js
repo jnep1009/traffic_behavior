@@ -10,7 +10,8 @@ define(['jquery', 'd3'], function ($) {
         gridSize = Math.floor(width / 24),
         legendElementWidth = gridSize * 2,
         buckets = 9,
-        colors = ["#ffffd9", "#edf8b1", "#c7e9b4", "#7fcdbb", "#41b6c4", "#1d91c0", "#225ea8", "#253494", "#081d58"], // alternatively colorbrewer.YlGnBu[9]
+        //colors = ["#ffffd9", "#edf8b1", "#c7e9b4", "#7fcdbb", "#41b6c4", "#1d91c0", "#225ea8", "#253494", "#081d58"], // alternatively colorbrewer.YlGnBu[9] // alternatively colorbrewer.YlGnBu[9]
+        colors = ["#1a9850","#f46d43","#fdae61","#fee08b","#ffffbf","#d9ef8b","#a6d96a","#66bd63","#1a9850","#d73027"],
         days = ["Traffic", "Precipitation", "Visibility", "Temperature", "Wind Speed"],
         times = [
             "12am", "1am", "2am", "3am", "4am", "5am", "6am", "7am", "8am", "9am", "10am", "11am", "12pm",
@@ -75,8 +76,9 @@ define(['jquery', 'd3'], function ($) {
     function getDailySummary(stn_id, date) {
         var get_url = 'avgEachDay?stn_id=' + stn_id + '&date=' + date;
         d3.json(get_url, function (error, data) {
-            var colorScale = d3.scale.quantile()
-                .domain([0, buckets - 1, d3.max(data, function (d) {
+
+            var colorScale = d3.scale.quantize()
+                .domain([0, 2, d3.max(data, function (d) {
                     return d.value
                 })])
                 .range(colors);
@@ -88,7 +90,6 @@ define(['jquery', 'd3'], function ($) {
 
             cards.enter().append("rect")
                 .attr("x", function (d) {
-                    console.log(d.day);
                     return (d.day - 1) * gridSize;
                 })
                 .attr("y", function (d) {
@@ -102,7 +103,7 @@ define(['jquery', 'd3'], function ($) {
                 .style("fill", colors[0]);
 
             cards.transition().duration(1000)
-                .style("fill", function (d) {
+                .style("fill", function (d) {;
                     return colorScale(d.value);
                 });
 

@@ -15,7 +15,7 @@ define(['jquery', 'd3', 'd3_hourly_heatmap'], function ($, _, hourly_heatmap) {
     var format = d3.time.format("%Y-%m-%d");
 
     var color = d3.scale.quantize()
-        .domain([0, 1.5])
+        .domain([0, 1.3])
         .range(d3.range(11).map(function (d) {
             return "q" + d + "-11";
         }));
@@ -138,6 +138,7 @@ define(['jquery', 'd3', 'd3_hourly_heatmap'], function ($, _, hourly_heatmap) {
                     return d.date;
                 })
                 .rollup(function (d) {
+                    console.log(d[0].rec_num / d[0].rec_sum);
                     return d[0].rec_num / d[0].rec_sum;
                 })
                 .map(json_p);

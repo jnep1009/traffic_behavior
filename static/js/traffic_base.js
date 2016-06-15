@@ -76,7 +76,7 @@ define(['jquery', 'mapbox', 'd3', 'd3_chart','d3_linechart'], function ($, _, _,
       });
     });
 
-  // // Get weather Station Sites
+   // Get weather Station Sites
   //$.get('getWeatherStation',
   //  function (data) {
   //    var json_dat = JSON.parse(data);

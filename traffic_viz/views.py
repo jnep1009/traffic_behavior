@@ -111,7 +111,7 @@ def get_record(request):
     cursor = connection.cursor()
     cursor.execute("select stn_id as id, date_trunc('day',datestamp)::date, " \
                    "cast (sum(record) as integer) as daily, sum(avg_hourly_record) as avg_daily "
-                   "from stn_record where stn_id=%s "
+                   "from stn_record where stn_id=%s"
                    "group by stn_id, date_trunc('day', datestamp)::date "
                    "order by date_trunc('day', datestamp)::date;", [stn_id])
     total_rows = cursor.fetchall()
@@ -165,6 +165,7 @@ def daily_hour(request):
     date = request.GET.get('date')
     date_split = datetime.date(year=int(date.split("-")[0]),month=int(date.split("-")[1]),day=int(date.split("-")[2]))
     next_day = date_split + relativedelta(days=1)
+    print(date, next_day)
     hour_arr = []
     cursor = connection.cursor()
     # cursor.execute("select t.stn, t.hour_of_day, avg(record) from("
