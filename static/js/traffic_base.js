@@ -47,11 +47,11 @@ define(['jquery', 'mapbox', 'd3', 'd3_chart','d3_linechart'], function ($, _, _,
     marker.setIcon(L.divIcon(feature.properties.icon));
   });
 
-  wstnLayer.on('layeradd', function (e) {
-    var marker = e.layer,
-      feature = marker.feature;
-    marker.setIcon(L.divIcon(feature.properties.icon));
-  });
+  //wstnLayer.on('layeradd', function (e) {
+  //  var marker = e.layer,
+  //    feature = marker.feature;
+  //  marker.setIcon(L.divIcon(feature.properties.icon));
+  //});
 
   /**
    * Get Traffic Sites locations
@@ -63,17 +63,17 @@ define(['jquery', 'mapbox', 'd3', 'd3_chart','d3_linechart'], function ($, _, _,
       var cam_mark = json_dat['cam'];
 
       // Add Layer for county
-      //countyLayer.setGeoJSON(geoCounty);
-      //countyLayer.setStyle({
-      //  fillColor: '#536872',
-      //  color: '#36454f',
-      //  fillOpacity: 0.2
-      //
-      //});
-      camLoc.setGeoJSON(cam_mark);
-      camLoc.eachLayer(function (layer) {
-        layerPopupDefault_(layer);
+      countyLayer.setGeoJSON(geoCounty);
+      countyLayer.setStyle({
+        fillColor: '#536872',
+        color: '#36454f',
+        fillOpacity: 0.2
+
       });
+      //camLoc.setGeoJSON(cam_mark);
+      //camLoc.eachLayer(function (layer) {
+      //  layerPopupDefault_(layer);
+      //});
     });
 
    // Get weather Station Sites

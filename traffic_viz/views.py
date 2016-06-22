@@ -178,23 +178,30 @@ def daily_hour(request):
                    "order by datestamp", [stn_id, date, next_day])
     hourly_rows = cursor.fetchall()
     for record in hourly_rows:
-        print(record)
+        print('car :', round((float(record[1])/float(record[2])),4),
+              'rain :', record[3]/0.01,
+              'vis :', record[4]/9,
+              'temp :', record[5]/60,
+              'wind :', record[6]/6
+              )
         hour_record = int(record[0]) + 1
         # print(round((float(record[1])/float(record[2])),2))
         # record
         hour_arr.append({
                 'day': 1,
                 'hour': hour_record,
-                'value': round((float(record[1])/float(record[2])),2)
+                'value': round((float(record[1])/float(record[2])),4)
         })
         # prec
         if record[3] is None :
+             print(record[3])
              hour_arr.append({
                 'day': 2,
                 'hour': hour_record,
                 'value': ""
         })
         else:
+            print(record[3])
             hour_arr.append({
                     'day': 2,
                     'hour': hour_record,
