@@ -138,7 +138,6 @@ define(['jquery', 'd3', 'd3_hourly_heatmap'], function ($, _, hourly_heatmap) {
                     return d.date;
                 })
                 .rollup(function (d) {
-                    console.log(d[0].rec_num / d[0].rec_sum);
                     return d[0].rec_num / d[0].rec_sum;
                 })
                 .map(json_p);

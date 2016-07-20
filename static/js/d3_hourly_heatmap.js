@@ -12,18 +12,19 @@ define(['jquery', 'd3'], function ($) {
         buckets = 9,
         //colors = ["#ffffd9", "#edf8b1", "#c7e9b4", "#7fcdbb", "#41b6c4", "#1d91c0", "#225ea8", "#253494", "#081d58"], // alternatively colorbrewer.YlGnBu[9] // alternatively colorbrewer.YlGnBu[9]
         colors = ["#1a9850","#f46d43","#fdae61","#fee08b","#ffffbf","#d9ef8b","#a6d96a","#66bd63","#1a9850","#d73027"],
-        days = ["Traffic", "Precipitation", "Visibility", "Temperature", "Wind Speed"],
+        //days = ["Traffic", "Precipitation", "Visibility", "Temperature", "Wind Speed"],
+        days=["Traffic"],
         times = [
             "12am", "1am", "2am", "3am", "4am", "5am", "6am", "7am", "8am", "9am", "10am", "11am", "12pm",
             "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm", "8pm", "9pm", "10pm", "11pm"
         ];
 
     var symbols = {
-        'Traffic': '\uf1b9',
-        'Precipitation': '\uf043',
-        'Visibility': '\uf06e',
-        'Temperature': '\uf185',
-        'Wind Speed': '\uf11d'
+        'Traffic': '\uf1b9'
+        //'Precipitation': '\uf043',
+        //'Visibility': '\uf06e',
+        //'Temperature': '\uf185',
+        //'Wind Speed': '\uf11d'
     };
 
     var svg = d3.select("#hourly_heatmap").append("svg")

@@ -178,12 +178,6 @@ def daily_hour(request):
                    "order by datestamp", [stn_id, date, next_day])
     hourly_rows = cursor.fetchall()
     for record in hourly_rows:
-        print('car :', round((float(record[1])/float(record[2])),4),
-              'rain :', record[3]/0.01,
-              'vis :', record[4]/9,
-              'temp :', record[5]/60,
-              'wind :', record[6]/6
-              )
         hour_record = int(record[0]) + 1
         # print(round((float(record[1])/float(record[2])),2))
         # record
@@ -193,59 +187,59 @@ def daily_hour(request):
                 'value': round((float(record[1])/float(record[2])),4)
         })
         # prec
-        if record[3] is None :
-             print(record[3])
-             hour_arr.append({
-                'day': 2,
-                'hour': hour_record,
-                'value': ""
-        })
-        else:
-            print(record[3])
-            hour_arr.append({
-                    'day': 2,
-                    'hour': hour_record,
-                    'value': record[3]/0.05
-            })
-        # vis
-        if record[4] is None :
-            hour_arr.append({
-                'day': 3,
-                'hour': hour_record,
-                'value': ""
-        })
-        else:
-            hour_arr.append({
-                    'day': 3,
-                    'hour': hour_record,
-                    'value': record[4]/9
-            })
-        # temp
-        if record[5] is None:
-            hour_arr.append({
-                'day': 4,
-                'hour': hour_record,
-                'value': ""
-        })
-        else:
-            hour_arr.append({
-                    'day': 4,
-                    'hour': hour_record,
-                    'value': record[5]/60
-            })
-        # wind
-        if record[6] is None:
-            hour_arr.append({
-                'day': 5,
-                'hour': hour_record,
-                'value': ""
-        })
-        else:
-            hour_arr.append({
-                    'day': 5,
-                    'hour': hour_record,
-                    'value': record[6]/6
-            })
+        # if record[3] is None :
+        #      print(record[3])
+        #      hour_arr.append({
+        #         'day': 2,
+        #         'hour': hour_record,
+        #         'value': ""
+        # })
+        # else:
+        #     print(record[3])
+        #     hour_arr.append({
+        #             'day': 2,
+        #             'hour': hour_record,
+        #             'value': record[3]/0.05
+        #     })
+        # # vis
+        # if record[4] is None :
+        #     hour_arr.append({
+        #         'day': 3,
+        #         'hour': hour_record,
+        #         'value': ""
+        # })
+        # else:
+        #     hour_arr.append({
+        #             'day': 3,
+        #             'hour': hour_record,
+        #             'value': record[4]/9
+        #     })
+        # # temp
+        # if record[5] is None:
+        #     hour_arr.append({
+        #         'day': 4,
+        #         'hour': hour_record,
+        #         'value': ""
+        # })
+        # else:
+        #     hour_arr.append({
+        #             'day': 4,
+        #             'hour': hour_record,
+        #             'value': record[5]/60
+        #     })
+        # # wind
+        # if record[6] is None:
+        #     hour_arr.append({
+        #         'day': 5,
+        #         'hour': hour_record,
+        #         'value': ""
+        # })
+        # else:
+        #     hour_arr.append({
+        #             'day': 5,
+        #             'hour': hour_record,
+        #             'value': record[6]/6
+        #     })
     return HttpResponse(json.dumps(hour_arr))
 
 def index(request):
